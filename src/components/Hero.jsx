@@ -133,7 +133,7 @@ const Hero = ({ data }) => {
                   >
                    <div className="aspect-square bg-gradient-to-br from-[#121212] to-[#1a1a1a] flex items-center justify-center">
                     <img 
-                      src="src/assets/harsha.png" 
+                      src="src/assets/harsha.jpg" 
                       alt="Profile" 
                       className="w-full h-full object-contain"
                     />
