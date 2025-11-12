@@ -1,0 +1,249 @@
+{
+  "website": {
+    "title": "Tushar Joshi - Full Stack Developer Portfolio",
+    "theme": {
+      "primaryColor": "#121212",
+      "accentColor": "#f5f5f5",
+      "backgroundColor": "#000000",
+      "borderRadius": "rounded-2xl",
+      "fontFamily": "Nunito, sans-serif"
+    },
+    "sections": [
+      {
+        "id": "hero",
+        "type": "intro",
+        "title": "Tushar Joshi",
+        "role": "Full Stack Developer",
+        "description": "My goal is to write clean, maintainable code that enhances the development process and makes coding enjoyable through structured and thoughtful practices.",
+        "quote": "Worked with over 25 Buddyse teams delivering scalable and impactful solutions.",
+        "buttons": [
+          { "label": "View Portfolio", "link": "#projects" },
+          { "label": "Contact Me", "link": "#contact_us" }
+        ],
+        "social_links": [
+          { "platform": "GitHub", "url": "github_profile_url" },
+          { "platform": "LinkedIn", "url": "linkedin_profile_url" },
+          { "platform": "Dribbble", "url": "dribbble_profile_url" },
+          { "platform": "Behance", "url": "behance_profile_url" }
+        ],
+        "image": "hero_image.png"
+      },
+      {
+        "id": "about",
+        "type": "about",
+        "title": "About Me",
+        "description": "Hello! I’m Tushar Joshi, a full-stack developer with nearly 20 years of experience in building scalable applications. I specialize in Angular, Ionic, PHP (CodeIgniter), and NodeJS.",
+        "details": {
+          "name": "Tushar Narendrakumar Joshi",
+          "nationality": "Indian",
+          "experience": "20+ Years",
+          "freelance": "Available",
+          "languages": ["Gujarati", "Hindi", "English"]
+        },
+        "tech_stack": {
+          "front_end": ["HTML", "CSS", "JavaScript", "TypeScript", "Angular", "Ionic", "Express"],
+          "back_end": ["PHP", "NodeJS", "ExpressJS", "MongoDB", "MySQL", "Docker"],
+          "database": ["MySQL", "MongoDB", "PostgreSQL"],
+          "ui_styling": ["Sass", "Bootstrap", "GSAP Animations", "Figma"],
+          "rest_apis": ["JWT", "OAuth", "Postman", "CORS", "HTTPS"]
+        }
+      },
+      {
+        "id": "work",
+        "type": "experience",
+        "title": "Work Experience",
+        "companies": [
+          {
+            "company": "Tech Rational",
+            "role": "Sr. Software Developer",
+            "period": "July 2022 – Dec 2023",
+            "projects": ["Innocew CRM", "TastyTruck App", "MyPro Mobile App", "MMD Sales App"]
+          },
+          {
+            "company": "WebAppX Technology",
+            "role": "Sr. Software Analyst & Developer",
+            "period": "2020 – June 2022",
+            "projects": ["Conscious Auto", "SMSWay Web App", "SchoolMyLess"]
+          },
+          {
+            "company": "Trinity Infocom",
+            "role": "MEAN / LAMP Developer",
+            "period": "March 2019 – Dec 2020",
+            "projects": ["Angular, NodeJS, MongoDB, MySQL Development"]
+          }
+        ]
+      },
+      {
+        "id": "services",
+        "type": "services",
+        "title": "What I Do",
+        "categories": [
+          {
+            "name": "Mobile App Development",
+            "description": "Custom hybrid applications tailored for iOS and Android using Ionic and Angular."
+          },
+          {
+            "name": "Solid Design Solutions",
+            "description": "User-centered creative design that enhances productivity and revenue growth."
+          },
+          {
+            "name": "Web Development",
+            "description": "Adaptive web design using modern frameworks like NodeJS and CodeIgniter."
+          }
+        ]
+      },
+      {
+        "id": "integration",
+        "type": "integration",
+        "title": "Integration & Stats",
+        "description": "Striving to create innovative applications through research, data analysis, and strategic development.",
+        "stats": {
+          "projects_completed": "332+",
+          "reviews": "100K+",
+          "experience_years": "20+",
+          "teams_worked_with": "25+"
+        }
+      },
+      {
+        "id": "typography_colors",
+        "type": "style",
+        "title": "Typography & Colors",
+        "colors": [
+          { "name": "Primary", "hex": "#121212" },
+          { "name": "Gray", "hex": "#a6a6a6" },
+          { "name": "White", "hex": "#f5f5f5" }
+        ],
+        "fonts": [
+          { "name": "Nunito", "use": "Body and headings" },
+          { "name": "Oswald", "use": "Accents and code-style text" }
+        ]
+      },
+      {
+        "id": "projects_showcase",
+        "type": "showcase",
+        "title": "Projects",
+        "heading": {
+          "main": "User-centered Development Approach Enhances Productivity and Drives Revenue Growth",
+          "emphasis": ["User-centered", "Productivity", "Revenue Growth"]
+        },
+        "subheading": {
+          "title": "Smart Development",
+          "description": "Elevating a business to stand out is both an art and a science. Their design philosophy not only enhances productivity but also drives growth."
+        },
+        "project": {
+          "name": "FoodCho PWA Web & Mobile Application",
+          "description": "Food Delivery Web & Mobile Application with Admin Panel and Delivery App for a complete delivery service ecosystem.",
+          "images": [
+            "admin_panel_dashboard.png",
+            "web_application_main.png",
+            "mobile_app_screens.png",
+            "delivery_app_interface.png"
+          ],
+          "tags": [
+            "Food Delivery",
+            "PWA",
+            "Mobile App",
+            "NodeJS",
+            "Admin Panel",
+            "Delivery App",
+            "Customer Satisfaction",
+            "Scalability"
+          ]
+        }
+      },
+      {
+        "id": "testimonials_recognitions",
+        "type": "testimonials",
+        "title": "Testimonials & Recognitions",
+        "subtitle": "Recognized for innovative solutions and quality excellence.",
+        "items": [
+          {
+            "title": "Quality - ZED Certification",
+            "organization": "MSME",
+            "awardedTo": "Dravya Technosys Pvt. Ltd",
+            "image": "msme_certificate.png"
+          },
+          {
+            "title": "Satisfaction - Certificate of Excellence",
+            "organization": "Vijeya Bank Computer Center",
+            "awardedTo": "Tushar Narendrakumar Joshi",
+            "image": "vijaya_bank_certificate.png"
+          },
+          {
+            "title": "Responsiveness Recognition",
+            "organization": "Multiple Organizations",
+            "description": "Delivered 52+ software projects including APMC, CreditSoft, and FarmAid.",
+            "image": "participation_certificates.png"
+          }
+        ]
+      },
+      {
+        "id": "buddyse_talent",
+        "type": "about_services",
+        "heading": "Buddyse",
+        "subheading": "A team of 25+ experts crafting and delivering impactful custom software and marketing solutions.",
+        "services": {
+          "customSoftwareDevelopment": [
+            {
+              "title": "Application Migration & Re-Engineering",
+              "description": "We modernize legacy systems for performance and scalability."
+            },
+            {
+              "title": "Product Development Service",
+              "description": "We take ideas from concept to launch-ready digital products."
+            },
+            {
+              "title": "Enterprise Application Development",
+              "description": "Building robust applications that power enterprise operations."
+            }
+          ],
+          "clientServerDevelopment": [
+            {
+              "title": "Client-server Application Development",
+              "description": "We design efficient, secure client-server systems."
+            },
+            {
+              "title": "On-premise Application Development",
+              "description": "Custom-built solutions for in-house business operations."
+            },
+            {
+              "title": "Maintenance and Support",
+              "description": "Full-cycle support and continuous optimization services."
+            }
+          ]
+        }
+      },
+      {
+        "id": "contact_us",
+        "type": "contact",
+        "branding": {
+          "name": "TUSHAR JOSHI",
+          "logo": "tushar_joshi_logo.svg"
+        },
+        "callToAction": {
+          "heading": "I’m eager to connect and collaborate.",
+          "subheading": "Let’s discuss ideas or potential projects and build something amazing together.",
+          "button": { "text": "Light Up the Talk", "action": "open_contact_form" }
+        },
+        "contactInfo": {
+          "email": "tusharjoshi2022@gmail.com",
+          "phone": "+91-9726286345",
+          "address": {
+            "building": "B-108, Ssky Galaxy",
+            "area": "Nr. Khokhar Temple, Naroda",
+            "city": "Ahmedabad",
+            "pincode": "382330"
+          },
+          "note": "Don’t like forms? Drop an email instead."
+        },
+        "socialMedia": [
+          { "name": "github", "url": "github_profile_url" },
+          { "name": "behance", "url": "behance_profile_url" },
+          { "name": "fiverr", "url": "fiverr_profile_url" },
+          { "name": "linkedin", "url": "linkedin_profile_url" },
+          { "name": "instagram", "url": "instagram_profile_url" }
+        ]
+      }
+    ]
+  }
+}
