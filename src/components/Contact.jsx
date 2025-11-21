@@ -242,6 +242,9 @@ const socialMedia = [
             <p className="font-nunito text-[#a6a6a6] text-xs mt-1">
               Crafted with passion and attention to detail
             </p>
+            <p className="font-nunito text-[#a6a6a6] text-xs mt-2">
+              <a href="/admin" className="text-[#f5f5f5] hover:underline">Admin</a>
+            </p>
           </motion.div>
 
           {/* Back to Top Button */}

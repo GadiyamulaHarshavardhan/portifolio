@@ -1,0 +1,23 @@
+{
+  "name": "portfolio-admin-backend",
+  "version": "1.0.0",
+  "description": "Backend for portfolio admin panel with SQLite3",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6",
+    "bcrypt": "^5.1.0",
+    "express-session": "^1.17.3",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": ["portfolio", "admin", "sqlite", "express"],
+  "author": "Tushar Joshi",
+  "license": "MIT"
+}
