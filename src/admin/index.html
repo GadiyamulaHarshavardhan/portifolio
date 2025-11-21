@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Admin Panel</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #121212;
+            --accent: #f5f5f5;
+            --gray: #a6a6a6;
+        }
+        
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        
+        .content {
+            transition: all 0.3s ease;
+        }
+        
+        .section-editor {
+            display: none;
+        }
+        
+        .section-editor.active {
+            display: block;
+        }
+        
+        .nav-item.active {
+            background-color: #333;
+            border-left: 3px solid var(--accent);
+        }
+        
+        .form-section {
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 8px 12px;
+            background-color: #333;
+            border: 1px solid #555;
+            border-radius: 4px;
+            color: var(--accent);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent);
+            color: var(--primary);
+        }
+        
+        .btn-secondary {
+            background-color: #555;
+            color: var(--accent);
+            margin-left: 10px;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .tab-button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: var(--accent);
+            border: none;
+            cursor: pointer;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .tab-button.active {
+            background-color: var(--primary);
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .analytics-card {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .analytics-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .analytics-title {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <!-- Login Screen -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center bg-gray-900">
+        <div class="bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-md">
+            <h1 class="text-2xl font-bold text-center mb-6">Admin Login</h1>
+            <form id="login-form">
+                <div class="mb-4">
+                    <label for="username" class="block mb-2">Username</label>
+                    <input type="text" id="username" class="w-full p-3 bg-gray-700 border border-gray-600 rounded" required>
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block mb-2">Password</label>
+                    <input type="password" id="password" class="w-full p-3 bg-gray-700 border border-gray-600 rounded" required>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="hidden flex">
+        <!-- Sidebar -->
+        <div class="sidebar w-64 bg-gray-800 min-h-screen p-4">
+            <div class="mb-8">
+                <h1 class="text-xl font-bold">Portfolio Admin</h1>
+                <p class="text-sm text-gray-400">Dashboard</p>
+            </div>
+            
+            <nav>
+                <div class="nav-item active mb-2 p-3 rounded cursor-pointer" data-tab="dashboard">
+                    <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+                </div>
+                <div class="nav-item mb-2 p-3 rounded cursor-pointer" data-tab="hero">
+                    <i class="fas fa-user mr-2"></i> Hero Section
+                </div>
+                <div class="nav-item mb-2 p-3 rounded cursor-pointer" data-tab="about">
+                    <i class="fas fa-info-circle mr-2"></i> About Section
+                </div>
+                <div class="nav-item mb-2 p-3 rounded cursor-pointer" data-tab="experience">
+                    <i class="fas fa-briefcase mr-2"></i> Experience
+                </div>
+                <div class="nav-item mb-2 p-3 rounded cursor-pointer" data-tab="services">
+                    <i class="fas fa-cogs mr-2"></i> Services
+                </div>
+                <div class="nav-item mb-2 p-3 rounded cursor-pointer" data-tab="projects">
+                    <i class="fas fa-project-diagram mr-2"></i> Projects
+                </div>
+                <div class="nav-item mb-2 p-3 rounded cursor-pointer" data-tab="testimonials">
+                    <i class="fas fa-star mr-2"></i> Testimonials
+                </div>
+                <div class="nav-item mb-2 p-3 rounded cursor-pointer" data-tab="contact">
+                    <i class="fas fa-envelope mr-2"></i> Contact
+                </div>
+                <div class="nav-item mb-2 p-3 rounded cursor-pointer" data-tab="analytics">
+                    <i class="fas fa-chart-bar mr-2"></i> Analytics
+                </div>
+            </nav>
+            
+            <div class="mt-auto pt-8">
+                <button id="logout-btn" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content flex-1 p-6">
+            <!-- Dashboard Tab -->
+            <div id="dashboard-tab" class="tab-content active">
+                <h2 class="text-2xl font-bold mb-6">Dashboard Overview</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="analytics-card">
+                        <div class="analytics-title">Total Views</div>
+                        <div class="analytics-value" id="total-views">0</div>
+                    </div>
+                    <div class="analytics-card">
+                        <div class="analytics-title">Unique Visitors</div>
+                        <div class="analytics-value" id="unique-visitors">0</div>
+                    </div>
+                    <div class="analytics-card">
+                        <div class="analytics-title">Avg Daily Views</div>
+                        <div class="analytics-value" id="avg-daily">0</div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4">Recent Activity</h3>
+                    <div class="chart-container">
+                        <canvas id="analytics-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Editors -->
+            <div id="hero-editor" class="section-editor">
+                <h2 class="text-2xl font-bold mb-6">Hero Section Editor</h2>
+                <div class="form-section">
+                    <div class="form-group">
+                        <label class="form-label">Title</label>
+                        <input type="text" id="hero-title" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Role</label>
+                        <input type="text" id="hero-role" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea id="hero-description" class="form-input" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Quote</label>
+                        <input type="text" id="hero-quote" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Image</label>
+                        <input type="text" id="hero-image" class="form-input" placeholder="Image filename">
+                    </div>
+                    <button id="save-hero" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+
+            <div id="about-editor" class="section-editor">
+                <h2 class="text-2xl font-bold mb-6">About Section Editor</h2>
+                <div class="form-section">
+                    <div class="form-group">
+                        <label class="form-label">Title</label>
+                        <input type="text" id="about-title" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea id="about-description" class="form-input" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" id="about-full-name" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nationality</label>
+                        <input type="text" id="about-nationality" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Experience</label>
+                        <input type="text" id="about-experience" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Freelance Status</label>
+                        <input type="text" id="about-freelance" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Languages</label>
+                        <input type="text" id="about-languages" class="form-input" placeholder="Comma separated">
+                    </div>
+                    <button id="save-about" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+
+            <div id="experience-editor" class="section-editor">
+                <h2 class="text-2xl font-bold mb-6">Experience Editor</h2>
+                <div class="form-section">
+                    <div class="form-group">
+                        <label class="form-label">Title</label>
+                        <input type="text" id="experience-title" class="form-input">
+                    </div>
+                    <div id="experience-entries">
+                        <!-- Experience entries will be added here dynamically -->
+                    </div>
+                    <button id="add-experience" class="btn btn-secondary mb-4">Add Experience</button>
+                    <button id="save-experience" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+
+            <div id="services-editor" class="section-editor">
+                <h2 class="text-2xl font-bold mb-6">Services Editor</h2>
+                <div class="form-section">
+                    <div class="form-group">
+                        <label class="form-label">Title</label>
+                        <input type="text" id="services-title" class="form-input">
+                    </div>
+                    <div id="service-entries">
+                        <!-- Service entries will be added here dynamically -->
+                    </div>
+                    <button id="add-service" class="btn btn-secondary mb-4">Add Service</button>
+                    <button id="save-services" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+
+            <div id="projects-editor" class="section-editor">
+                <h2 class="text-2xl font-bold mb-6">Projects Editor</h2>
+                <div class="form-section">
+                    <div class="form-group">
+                        <label class="form-label">Title</label>
+                        <input type="text" id="projects-title" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Main Heading</label>
+                        <input type="text" id="projects-main-heading" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Project Name</label>
+                        <input type="text" id="project-name" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Project Description</label>
+                        <textarea id="project-description" class="form-input" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Project Images (comma separated)</label>
+                        <input type="text" id="project-images" class="form-input" placeholder="image1.png, image2.png">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Project Tags (comma separated)</label>
+                        <input type="text" id="project-tags" class="form-input" placeholder="tag1, tag2, tag3">
+                    </div>
+                    <button id="save-projects" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+
+            <div id="testimonials-editor" class="section-editor">
+                <h2 class="text-2xl font-bold mb-6">Testimonials Editor</h2>
+                <div class="form-section">
+                    <div class="form-group">
+                        <label class="form-label">Title</label>
+                        <input type="text" id="testimonials-title" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Subtitle</label>
+                        <input type="text" id="testimonials-subtitle" class="form-input">
+                    </div>
+                    <div id="testimonial-entries">
+                        <!-- Testimonial entries will be added here dynamically -->
+                    </div>
+                    <button id="add-testimonial" class="btn btn-secondary mb-4">Add Testimonial</button>
+                    <button id="save-testimonials" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+
+            <div id="contact-editor" class="section-editor">
+                <h2 class="text-2xl font-bold mb-6">Contact Editor</h2>
+                <div class="form-section">
+                    <div class="form-group">
+                        <label class="form-label">Brand Name</label>
+                        <input type="text" id="contact-brand-name" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="text" id="contact-email" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="text" id="contact-phone" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Address Building</label>
+                        <input type="text" id="contact-building" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Address Area</label>
+                        <input type="text" id="contact-area" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">City</label>
+                        <input type="text" id="contact-city" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Pincode</label>
+                        <input type="text" id="contact-pincode" class="form-input">
+                    </div>
+                    <button id="save-contact" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+
+            <div id="analytics-tab" class="tab-content">
+                <h2 class="text-2xl font-bold mb-6">Analytics Dashboard</h2>
+                <div class="bg-gray-800 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4">Detailed Analytics</h3>
+                    <div class="chart-container">
+                        <canvas id="detailed-analytics-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentTab = 'dashboard';
+        let portfolioData = null;
+        let analyticsData = null;
+        let analyticsChart = null;
+        let detailedAnalyticsChart = null;
+
+        // DOM Elements
+        const loginScreen = document.getElementById('login-screen');
+        const dashboard = document.getElementById('dashboard');
+        const loginForm = document.getElementById('login-form');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // Tab navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const tab = item.getAttribute('data-tab');
+                switchTab(tab);
+            });
+        });
+
+        // Login form submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    loginScreen.classList.add('hidden');
+                    dashboard.classList.remove('hidden');
+                    loadPortfolioData();
+                    loadAnalyticsData();
+                } else {
+                    alert(data.error || 'Login failed');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Login failed. Please try again.');
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await fetch('/api/admin/logout', {
+                    method: 'POST'
+                });
+                loginScreen.classList.remove('hidden');
+                dashboard.classList.add('hidden');
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+
+        // Tab switching function
+        function switchTab(tabName) {
+            // Update active nav item
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+            // Hide all tabs
+            document.querySelectorAll('.tab-content, .section-editor').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            if (tabName === 'dashboard') {
+                document.getElementById('dashboard-tab').classList.add('active');
+                loadAnalyticsData();
+            } else if (tabName === 'analytics') {
+                document.getElementById('analytics-tab').classList.add('active');
+                loadAnalyticsData();
+            } else {
+                document.getElementById(`${tabName}-editor`).classList.add('active');
+                loadSectionData(tabName);
+            }
+
+            currentTab = tabName;
+        }
+
+        // Load portfolio data
+        async function loadPortfolioData() {
+            try {
+                const response = await fetch('/api/portfolio');
+                portfolioData = await response.json();
+                console.log('Portfolio data loaded:', portfolioData);
+            } catch (error) {
+                console.error('Error loading portfolio data:', error);
+            }
+        }
+
+        // Load section data for editing
+        async function loadSectionData(sectionType) {
+            if (!portfolioData) {
+                await loadPortfolioData();
+            }
+
+            if (!portfolioData || !portfolioData.website || !portfolioData.website.sections) {
+                console.error('No portfolio data available');
+                return;
+            }
+
+            const section = portfolioData.website.sections.find(s => s.type === sectionType);
+            if (!section) {
+                console.error(`Section ${sectionType} not found`);
+                return;
+            }
+
+            switch (sectionType) {
+                case 'intro':
+                    document.getElementById('hero-title').value = section.title || '';
+                    document.getElementById('hero-role').value = section.role || '';
+                    document.getElementById('hero-description').value = section.description || '';
+                    document.getElementById('hero-quote').value = section.quote || '';
+                    document.getElementById('hero-image').value = section.image || '';
+                    break;
+                case 'about':
+                    document.getElementById('about-title').value = section.title || '';
+                    document.getElementById('about-description').value = section.description || '';
+                    document.getElementById('about-full-name').value = section.details?.name || '';
+                    document.getElementById('about-nationality').value = section.details?.nationality || '';
+                    document.getElementById('about-experience').value = section.details?.experience || '';
+                    document.getElementById('about-freelance').value = section.details?.freelance || '';
+                    document.getElementById('about-languages').value = section.details?.languages ? section.details.languages.join(', ') : '';
+                    break;
+                case 'experience':
+                    document.getElementById('experience-title').value = section.title || '';
+                    renderExperienceEntries(section.companies || []);
+                    break;
+                case 'services':
+                    document.getElementById('services-title').value = section.title || '';
+                    renderServiceEntries(section.categories || []);
+                    break;
+                case 'showcase':
+                    document.getElementById('projects-title').value = section.title || '';
+                    document.getElementById('projects-main-heading').value = section.heading?.main || '';
+                    document.getElementById('project-name').value = section.project?.name || '';
+                    document.getElementById('project-description').value = section.project?.description || '';
+                    document.getElementById('project-images').value = section.project?.images ? section.project.images.join(', ') : '';
+                    document.getElementById('project-tags').value = section.project?.tags ? section.project.tags.join(', ') : '';
+                    break;
+                case 'testimonials':
+                    document.getElementById('testimonials-title').value = section.title || '';
+                    document.getElementById('testimonials-subtitle').value = section.subtitle || '';
+                    renderTestimonialEntries(section.items || []);
+                    break;
+                case 'contact':
+                    document.getElementById('contact-brand-name').value = section.branding?.name || '';
+                    document.getElementById('contact-email').value = section.contactInfo?.email || '';
+                    document.getElementById('contact-phone').value = section.contactInfo?.phone || '';
+                    document.getElementById('contact-building').value = section.contactInfo?.address?.building || '';
+                    document.getElementById('contact-area').value = section.contactInfo?.address?.area || '';
+                    document.getElementById('contact-city').value = section.contactInfo?.address?.city || '';
+                    document.getElementById('contact-pincode').value = section.contactInfo?.address?.pincode || '';
+                    break;
+            }
+        }
+
+        // Render experience entries
+        function renderExperienceEntries(companies) {
+            const container = document.getElementById('experience-entries');
+            container.innerHTML = '';
+            
+            companies.forEach((company, index) => {
+                const entry = document.createElement('div');
+                entry.className = 'mb-4 p-4 bg-gray-700 rounded';
+                entry.innerHTML = `
+                    <div class="form-group">
+                        <label class="form-label">Company</label>
+                        <input type="text" class="form-input experience-company" value="${company.company || ''}" data-index="${index}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Role</label>
+                        <input type="text" class="form-input experience-role" value="${company.role || ''}" data-index="${index}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Period</label>
+                        <input type="text" class="form-input experience-period" value="${company.period || ''}" data-index="${index}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Projects (comma separated)</label>
+                        <input type="text" class="form-input experience-projects" value="${company.projects ? company.projects.join(', ') : ''}" data-index="${index}">
+                    </div>
+                    <button class="btn btn-danger remove-experience" data-index="${index}">Remove</button>
+                `;
+                container.appendChild(entry);
+            });
+
+            // Add event listeners for remove buttons
+            document.querySelectorAll('.remove-experience').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const index = parseInt(e.target.getAttribute('data-index'));
+                    const entries = document.querySelectorAll('.experience-company');
+                    if (entries.length > 1) {
+                        entries[index].closest('.mb-4').remove();
+                    }
+                });
+            });
+        }
+
+        // Render service entries
+        function renderServiceEntries(categories) {
+            const container = document.getElementById('service-entries');
+            container.innerHTML = '';
+            
+            categories.forEach((category, index) => {
+                const entry = document.createElement('div');
+                entry.className = 'mb-4 p-4 bg-gray-700 rounded';
+                entry.innerHTML = `
+                    <div class="form-group">
+                        <label class="form-label">Service Name</label>
+                        <input type="text" class="form-input service-name" value="${category.name || ''}" data-index="${index}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <input type="text" class="form-input service-description" value="${category.description || ''}" data-index="${index}">
+                    </div>
+                    <button class="btn btn-danger remove-service" data-index="${index}">Remove</button>
+                `;
+                container.appendChild(entry);
+            });
+
+            // Add event listeners for remove buttons
+            document.querySelectorAll('.remove-service').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const index = parseInt(e.target.getAttribute('data-index'));
+                    const entries = document.querySelectorAll('.service-name');
+                    if (entries.length > 1) {
+                        entries[index].closest('.mb-4').remove();
+                    }
+                });
+            });
+        }
+
+        // Render testimonial entries
+        function renderTestimonialEntries(items) {
+            const container = document.getElementById('testimonial-entries');
+            container.innerHTML = '';
+            
+            items.forEach((item, index) => {
+                const entry = document.createElement('div');
+                entry.className = 'mb-4 p-4 bg-gray-700 rounded';
+                entry.innerHTML = `
+                    <div class="form-group">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-input testimonial-title" value="${item.title || ''}" data-index="${index}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Organization</label>
+                        <input type="text" class="form-input testimonial-org" value="${item.organization || ''}" data-index="${index}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Awarded To</label>
+                        <input type="text" class="form-input testimonial-awarded" value="${item.awardedTo || ''}" data-index="${index}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <input type="text" class="form-input testimonial-desc" value="${item.description || ''}" data-index="${index}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Image</label>
+                        <input type="text" class="form-input testimonial-image" value="${item.image || ''}" data-index="${index}">
+                    </div>
+                    <button class="btn btn-danger remove-testimonial" data-index="${index}">Remove</button>
+                `;
+                container.appendChild(entry);
+            });
+
+            // Add event listeners for remove buttons
+            document.querySelectorAll('.remove-testimonial').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const index = parseInt(e.target.getAttribute('data-index'));
+                    const entries = document.querySelectorAll('.testimonial-title');
+                    if (entries.length > 1) {
+                        entries[index].closest('.mb-4').remove();
+                    }
+                });
+            });
+        }
+
+        // Add experience entry
+        document.getElementById('add-experience').addEventListener('click', () => {
+            const container = document.getElementById('experience-entries');
+            const index = container.children.length;
+            const entry = document.createElement('div');
+            entry.className = 'mb-4 p-4 bg-gray-700 rounded';
+            entry.innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Company</label>
+                    <input type="text" class="form-input experience-company" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <input type="text" class="form-input experience-role" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Period</label>
+                    <input type="text" class="form-input experience-period" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Projects (comma separated)</label>
+                    <input type="text" class="form-input experience-projects" data-index="${index}">
+                </div>
+                <button class="btn btn-danger remove-experience" data-index="${index}">Remove</button>
+            `;
+            container.appendChild(entry);
+
+            // Add event listener for remove button
+            entry.querySelector('.remove-experience').addEventListener('click', (e) => {
+                const idx = parseInt(e.target.getAttribute('data-index'));
+                const entries = document.querySelectorAll('.experience-company');
+                if (entries.length > 1) {
+                    entry.remove();
+                }
+            });
+        });
+
+        // Add service entry
+        document.getElementById('add-service').addEventListener('click', () => {
+            const container = document.getElementById('service-entries');
+            const index = container.children.length;
+            const entry = document.createElement('div');
+            entry.className = 'mb-4 p-4 bg-gray-700 rounded';
+            entry.innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Service Name</label>
+                    <input type="text" class="form-input service-name" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" class="form-input service-description" data-index="${index}">
+                </div>
+                <button class="btn btn-danger remove-service" data-index="${index}">Remove</button>
+            `;
+            container.appendChild(entry);
+
+            // Add event listener for remove button
+            entry.querySelector('.remove-service').addEventListener('click', (e) => {
+                const idx = parseInt(e.target.getAttribute('data-index'));
+                const entries = document.querySelectorAll('.service-name');
+                if (entries.length > 1) {
+                    entry.remove();
+                }
+            });
+        });
+
+        // Add testimonial entry
+        document.getElementById('add-testimonial').addEventListener('click', () => {
+            const container = document.getElementById('testimonial-entries');
+            const index = container.children.length;
+            const entry = document.createElement('div');
+            entry.className = 'mb-4 p-4 bg-gray-700 rounded';
+            entry.innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input testimonial-title" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Organization</label>
+                    <input type="text" class="form-input testimonial-org" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Awarded To</label>
+                    <input type="text" class="form-input testimonial-awarded" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" class="form-input testimonial-desc" data-index="${index}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Image</label>
+                    <input type="text" class="form-input testimonial-image" data-index="${index}">
+                </div>
+                <button class="btn btn-danger remove-testimonial" data-index="${index}">Remove</button>
+            `;
+            container.appendChild(entry);
+
+            // Add event listener for remove button
+            entry.querySelector('.remove-testimonial').addEventListener('click', (e) => {
+                const idx = parseInt(e.target.getAttribute('data-index'));
+                const entries = document.querySelectorAll('.testimonial-title');
+                if (entries.length > 1) {
+                    entry.remove();
+                }
+            });
+        });
+
+        // Save hero section
+        document.getElementById('save-hero').addEventListener('click', async () => {
+            const section = {
+                id: "hero",
+                type: "intro",
+                title: document.getElementById('hero-title').value,
+                role: document.getElementById('hero-role').value,
+                description: document.getElementById('hero-description').value,
+                quote: document.getElementById('hero-quote').value,
+                buttons: [
+                    { "label": "View Portfolio", "link": "#projects" },
+                    { "label": "Contact Me", "link": "#contact_us" }
+                ],
+                social_links: [
+                    { "platform": "GitHub", "url": "github_profile_url" },
+                    { "platform": "LinkedIn", "url": "linkedin_profile_url" },
+                    { "platform": "Dribbble", "url": "dribbble_profile_url" },
+                    { "platform": "Behance", "url": "behance_profile_url" }
+                ],
+                image: document.getElementById('hero-image').value
+            };
+
+            await saveSection(section);
+        });
+
+        // Save about section
+        document.getElementById('save-about').addEventListener('click', async () => {
+            const languages = document.getElementById('about-languages').value.split(',').map(lang => lang.trim()).filter(lang => lang);
+            
+            const section = {
+                id: "about",
+                type: "about",
+                title: document.getElementById('about-title').value,
+                description: document.getElementById('about-description').value,
+                details: {
+                    name: document.getElementById('about-full-name').value,
+                    nationality: document.getElementById('about-nationality').value,
+                    experience: document.getElementById('about-experience').value,
+                    freelance: document.getElementById('about-freelance').value,
+                    languages: languages
+                },
+                tech_stack: {
+                    front_end: ["HTML", "CSS", "JavaScript", "TypeScript", "Angular", "Ionic", "Express"],
+                    back_end: ["PHP", "NodeJS", "ExpressJS", "MongoDB", "MySQL", "Docker"],
+                    database: ["MySQL", "MongoDB", "PostgreSQL"],
+                    ui_styling: ["Sass", "Bootstrap", "GSAP Animations", "Figma"],
+                    rest_apis: ["JWT", "OAuth", "Postman", "CORS", "HTTPS"]
+                }
+            };
+
+            await saveSection(section);
+        });
+
+        // Save experience section
+        document.getElementById('save-experience').addEventListener('click', async () => {
+            const companies = [];
+            document.querySelectorAll('.experience-company').forEach((input, index) => {
+                const company = input.value;
+                const role = document.querySelector(`.experience-role[data-index="${index}"]`).value;
+                const period = document.querySelector(`.experience-period[data-index="${index}"]`).value;
+                const projectsStr = document.querySelector(`.experience-projects[data-index="${index}"]`).value;
+                const projects = projectsStr.split(',').map(p => p.trim()).filter(p => p);
+                
+                if (company) {
+                    companies.push({
+                        company,
+                        role,
+                        period,
+                        projects
+                    });
+                }
+            });
+            
+            const section = {
+                id: "work",
+                type: "experience",
+                title: document.getElementById('experience-title').value,
+                companies
+            };
+
+            await saveSection(section);
+        });
+
+        // Save services section
+        document.getElementById('save-services').addEventListener('click', async () => {
+            const categories = [];
+            document.querySelectorAll('.service-name').forEach((input, index) => {
+                const name = input.value;
+                const description = document.querySelector(`.service-description[data-index="${index}"]`).value;
+                
+                if (name) {
+                    categories.push({
+                        name,
+                        description
+                    });
+                }
+            });
+            
+            const section = {
+                id: "services",
+                type: "services",
+                title: document.getElementById('services-title').value,
+                categories
+            };
+
+            await saveSection(section);
+        });
+
+        // Save projects section
+        document.getElementById('save-projects').addEventListener('click', async () => {
+            const images = document.getElementById('project-images').value.split(',').map(img => img.trim()).filter(img => img);
+            const tags = document.getElementById('project-tags').value.split(',').map(tag => tag.trim()).filter(tag => tag);
+            
+            const section = {
+                id: "projects_showcase",
+                type: "showcase",
+                title: document.getElementById('projects-title').value,
+                heading: {
+                    main: document.getElementById('projects-main-heading').value,
+                    emphasis: ["User-centered", "Productivity", "Revenue Growth"]
+                },
+                subheading: {
+                    title: "Smart Development",
+                    description: "Elevating a business to stand out is both an art and a science. Their design philosophy not only enhances productivity but also drives growth."
+                },
+                project: {
+                    name: document.getElementById('project-name').value,
+                    description: document.getElementById('project-description').value,
+                    images,
+                    tags
+                }
+            };
+
+            await saveSection(section);
+        });
+
+        // Save testimonials section
+        document.getElementById('save-testimonials').addEventListener('click', async () => {
+            const items = [];
+            document.querySelectorAll('.testimonial-title').forEach((input, index) => {
+                const title = input.value;
+                const organization = document.querySelector(`.testimonial-org[data-index="${index}"]`).value;
+                const awardedTo = document.querySelector(`.testimonial-awarded[data-index="${index}"]`).value;
+                const description = document.querySelector(`.testimonial-desc[data-index="${index}"]`).value;
+                const image = document.querySelector(`.testimonial-image[data-index="${index}"]`).value;
+                
+                if (title) {
+                    items.push({
+                        title,
+                        organization,
+                        awardedTo,
+                        description,
+                        image
+                    });
+                }
+            });
+            
+            const section = {
+                id: "testimonials_recognitions",
+                type: "testimonials",
+                title: document.getElementById('testimonials-title').value,
+                subtitle: document.getElementById('testimonials-subtitle').value,
+                items
+            };
+
+            await saveSection(section);
+        });
+
+        // Save contact section
+        document.getElementById('save-contact').addEventListener('click', async () => {
+            const section = {
+                id: "contact_us",
+                type: "contact",
+                branding: {
+                    name: document.getElementById('contact-brand-name').value,
+                    logo: "tushar_joshi_logo.svg"
+                },
+                callToAction: {
+                    heading: "I'm eager to connect and collaborate.",
+                    subheading: "Let's discuss ideas or potential projects and build something amazing together.",
+                    button: { "text": "Light Up the Talk", "action": "open_contact_form" }
+                },
+                contactInfo: {
+                    email: document.getElementById('contact-email').value,
+                    phone: document.getElementById('contact-phone').value,
+                    address: {
+                        building: document.getElementById('contact-building').value,
+                        area: document.getElementById('contact-area').value,
+                        city: document.getElementById('contact-city').value,
+                        pincode: document.getElementById('contact-pincode').value
+                    },
+                    note: "Don't like forms? Drop an email instead."
+                },
+                socialMedia: [
+                    { "name": "github", "url": "github_profile_url" },
+                    { "name": "behance", "url": "behance_profile_url" },
+                    { "name": "fiverr", "url": "fiverr_profile_url" },
+                    { "name": "linkedin", "url": "linkedin_profile_url" },
+                    { "name": "instagram", "url": "instagram_profile_url" }
+                ]
+            };
+
+            await saveSection(section);
+        });
+
+        // Generic function to save a section
+        async function saveSection(section) {
+            if (!portfolioData) {
+                await loadPortfolioData();
+            }
+
+            // Find and replace the section in the portfolio data
+            if (portfolioData && portfolioData.website && portfolioData.website.sections) {
+                const existingIndex = portfolioData.website.sections.findIndex(s => s.id === section.id);
+                
+                if (existingIndex !== -1) {
+                    portfolioData.website.sections[existingIndex] = section;
+                } else {
+                    portfolioData.website.sections.push(section);
+                }
+            } else {
+                portfolioData = {
+                    website: {
+                        title: "Tushar Joshi - Full Stack Developer Portfolio",
+                        theme: {
+                            primaryColor: "#121212",
+                            accentColor: "#f5f5f5",
+                            backgroundColor: "#000000",
+                            borderRadius: "rounded-2xl",
+                            fontFamily: "Nunito, sans-serif"
+                        },
+                        sections: [section]
+                    }
+                };
+            }
+
+            try {
+                const response = await fetch('/api/portfolio', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(portfolioData.website)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Section updated successfully!');
+                } else {
+                    alert(result.error || 'Failed to update section');
+                }
+            } catch (error) {
+                console.error('Error saving section:', error);
+                alert('Error saving section. Please try again.');
+            }
+        }
+
+        // Load analytics data
+        async function loadAnalyticsData() {
+            try {
+                const response = await fetch('/api/analytics');
+                analyticsData = await response.json();
+                
+                // Update dashboard stats
+                document.getElementById('total-views').textContent = analyticsData.summary.totalViews;
+                document.getElementById('unique-visitors').textContent = analyticsData.summary.totalVisitors;
+                document.getElementById('avg-daily').textContent = analyticsData.summary.avgDailyViews;
+                
+                // Prepare data for charts
+                const labels = analyticsData.dailyData.map(item => item.date);
+                const viewsData = analyticsData.dailyData.map(item => item.page_views);
+                const visitorsData = analyticsData.dailyData.map(item => item.unique_visitors);
+                
+                // Destroy existing charts if they exist
+                if (analyticsChart) {
+                    analyticsChart.destroy();
+                }
+                if (detailedAnalyticsChart) {
+                    detailedAnalyticsChart.destroy();
+                }
+                
+                // Create new charts
+                const ctx1 = document.getElementById('analytics-chart').getContext('2d');
+                analyticsChart = new Chart(ctx1, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Page Views',
+                                data: viewsData,
+                                borderColor: '#f5f5f5',
+                                backgroundColor: 'rgba(245, 245, 245, 0.1)',
+                                tension: 0.1
+                            },
+                            {
+                                label: 'Unique Visitors',
+                                data: visitorsData,
+                                borderColor: '#a6a6a6',
+                                backgroundColor: 'rgba(166, 166, 166, 0.1)',
+                                tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                
+                const ctx2 = document.getElementById('detailed-analytics-chart').getContext('2d');
+                detailedAnalyticsChart = new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Page Views',
+                                data: viewsData,
+                                backgroundColor: 'rgba(245, 245, 245, 0.6)'
+                            },
+                            {
+                                label: 'Unique Visitors',
+                                data: visitorsData,
+                                backgroundColor: 'rgba(166, 166, 166, 0.6)'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Error loading analytics:', error);
+            }
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if already authenticated (in a real app, you'd check session)
+            // For now, we'll just show the login screen
+        });
+    </script>
+</body>
+</html>

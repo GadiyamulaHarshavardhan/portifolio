@@ -10,14 +10,33 @@ import Projects from './components/Projects';
 import Testimonials from './components/Testimonials';
 import Buddyse from './components/Buddyse';
 import Contact from './components/Contact';
-import portfolioData from './portfolio.json';
 
 function App() {
   const [data, setData] = useState(null);
   const [threeError, setThreeError] = useState(false);
 
   useEffect(() => {
-    setData(portfolioData.website);
+    // Fetch portfolio data from backend API
+    fetch('/api/portfolio')
+      .then(response => response.json())
+      .then(data => {
+        setData(data.website);
+        // Record page view
+        fetch('/api/analytics/record-view', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .catch(error => console.error('Error recording view:', error));
+      })
+      .catch(error => {
+        console.error('Error fetching portfolio data:', error);
+        // Fallback to local data if API fails
+        import('./portfolio.json').then(module => {
+          setData(module.default.website);
+        });
+      });
   }, []);
 
   if (!data) return (
